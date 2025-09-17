@@ -5,12 +5,14 @@
 #include "stepper.h"
 
 
-#define MAX_SPEED   3000
-#define MAX_ACCEL   500
-
 /*! I'm using a 28BYJ-48 stepper with a ULN2003 phase driver
-    You better check your driver and wiring to match
+    You better check your driver and wiring to match.
+    Values are in defines.h
 */
+
+/**** stepper dynamics *****/
+#define MAX_SPEED   3000    //these values are ok for my machine, powering the stepper with 12V
+#define MAX_ACCEL   500
 
 AccelStepper stepper(AccelStepper::FULL4WIRE, STEPPER_A, STEPPER_C, STEPPER_B, STEPPER_D);
 

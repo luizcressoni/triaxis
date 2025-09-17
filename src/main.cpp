@@ -47,7 +47,7 @@ void loop() {
 
   gLed.Task();
   if(minute_changed(UPDATESECONDS))
-    stepper_move(1536);
+    stepper_move(PULSES_PER_MINUTE);
 
   stepper_loop();
 }
