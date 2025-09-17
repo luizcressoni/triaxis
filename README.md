@@ -8,6 +8,7 @@ This is a ESP32 driver for the triaxial Numechron clock found at <https://www.in
 - Uses a ESP32. I'm running mine in an old DOIT Devkit-v1. Adjust platformio.ini for your model
 - Connects to a WiFi hostspot and update time from NTP
 - Uses accelstepper for smooth step motor drive
+- OTA firmware update at ip/update using ElegantOTA
 
 ## TODO
 
