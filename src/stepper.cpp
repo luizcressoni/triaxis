@@ -11,8 +11,8 @@
 */
 
 /**** stepper dynamics *****/
-#define MAX_SPEED   3000    //these values are ok for my machine, powering the stepper with 12V
-#define MAX_ACCEL   500
+#define MAX_SPEED   1000    //these values are ok for my machine, powering the stepper with 12V
+#define MAX_ACCEL   300
 
 AccelStepper stepper(AccelStepper::FULL4WIRE, STEPPER_A, STEPPER_C, STEPPER_B, STEPPER_D);
 

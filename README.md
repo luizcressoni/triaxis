@@ -9,10 +9,8 @@ This is a ESP32 driver for the triaxial Numechron clock found at <https://www.in
 - Connects to a WiFi hostspot and update time from NTP
 - Uses accelstepper for smooth step motor drive
 - OTA firmware update at ip/update using ElegantOTA
-
-## TODO
-
-- Save the last minute so in case of a power failure, the clock can fast forwared to the current time by itself
+- Buttons to adjust the clock
+- Automatic adjustment after power ecovery
 
 ## Authors
 

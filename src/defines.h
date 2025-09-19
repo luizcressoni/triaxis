@@ -1,9 +1,5 @@
 /*! \file defines.h */
-
 #pragma once
-
-
-
 
 /*  ESP32 Pinout
 
@@ -24,58 +20,14 @@ Touch6 HSPI_CLK ADC2_6 GPIO14 *  -  GPIO4 ADC2_0 HSPI_HD Touch0
                           VIN -  -  3.3V
 
 
-
-SPI:
-    MOSI
-    SDA
-    MISO
-    SCK
-    CS_0
-
-LCD:
-    RS          13
-    EN          12
-    D4          14
-    D5          27
-    D6          26
-    D7          25
-    Contrast    15
-
-
-LCD pinout
-         GND -        
-         Vcc -
-    Contrast -
-          RS -
-         R/W -
-           E -
-          D0 -
-          D1 -
-          D2 -
-          D3 -
-          D4 -
-          D5 -
-          D6 -
-          D7 -
-        LED+ -
-        LED- -
 */
-
-
-#define LCD_RS          13
-#define LCD_EN          12
-#define LCD_D4          1
-#define LCD_D5          27
-#define LCD_D6          26    //mudar
-#define LCD_D7          25    //mudar
-#define LCD_Contrast    15
 
 #define STEPPER_A       32
 #define STEPPER_B       33
 #define STEPPER_C       25
 #define STEPPER_D       26
 
-
-
-
+#define KEY_MINUS       23
+#define KEY_PLUS        22
+#define KEY_ADVANCE_ONE 1
 //eof defines.h

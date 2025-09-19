@@ -49,9 +49,7 @@ const char *header_2 =
 
 
 
-void ota_setup()
-{
-   
+void ota_setup(){
 }
 
 void add_text(char *_text, const char *_toadd)
@@ -60,7 +58,7 @@ void add_text(char *_text, const char *_toadd)
 }
 
 
-void ota_task()
+void ota_loop()
 {
     static wl_status_t old_status = WL_DISCONNECTED;
 
@@ -78,11 +76,6 @@ void ota_task()
             Serial.print("IP address: ");
             Serial.println(WiFi.localIP());
 
-            // lcd.clear();
-            // lcd.print("Conneted:");
-            // lcd.setCursor(0, 1);
-            // lcd.print(WiFi.localIP());
-
             server.on("/", []() 
             {
                 server.send(200, "text/html", welcome_msg );
@@ -93,8 +86,11 @@ void ota_task()
             Serial.println("HTTP server started");
 
         }
-
         old_status = newstatus;
+        server.on("/", []() 
+        {
+            server.send(200, "text/html", welcome_msg );
+        });
     }
 
     if(newstatus == WL_CONNECTED)
