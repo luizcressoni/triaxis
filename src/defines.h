@@ -30,4 +30,5 @@ Touch6 HSPI_CLK ADC2_6 GPIO14 *  -  GPIO4 ADC2_0 HSPI_HD Touch0
 #define KEY_MINUS       23
 #define KEY_PLUS        22
 #define KEY_ADVANCE_ONE 1
+#define KEY_BUTTON      3
 //eof defines.h

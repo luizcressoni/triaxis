@@ -4,6 +4,6 @@
 //extern WebServer server;
 
 void ota_setup();
-void ota_loop();
+int ota_loop();
 
 //eof ota.h

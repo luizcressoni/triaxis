@@ -43,11 +43,16 @@ void update_time() {
     \note Set flipseconds so the clock has time to spin to match a new minute on time
     \return true if a new minute has come
 */
+bool firstrun = true;
 bool minute_changed(byte flipseconds)
 {
     bool ret = false;
-    static unsigned long last_update = 0;
     unsigned long now = millis();
+    static unsigned long last_update = now;
+    if(firstrun){
+        firstrun = false;
+        return false;
+    }
     if(now - last_update < 1000)
         return false;
     last_update = now;

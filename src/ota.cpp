@@ -43,7 +43,7 @@ const char *welcome_msg =
 const char *header_2 =    
     "<!DOCTYPE html><html><head></head>"
     "<body><p style=\"text-align: center;\">"
-    "<H1><center>LOGS</center></H1></p>";
+    "<H1><center>OK</center></H1></p>";
     
 
 
@@ -58,7 +58,29 @@ void add_text(char *_text, const char *_toadd)
 }
 
 
-void ota_loop()
+int adjust_level = 0;
+int getAdjust(){
+    int ret = adjust_level;
+    adjust_level = 0;
+    return ret;
+}
+
+void processAdjust(){
+    adjust_level = server.arg("min").toInt();
+    adjust_level *= PULSES_PER_MINUTE;
+    strcpy(fullpage, header_2);
+    add_text(fullpage, "</p></body></html>");
+    server.send(200, "text/html", fullpage );
+}
+
+void processSpin(){
+    adjust_level = server.arg("pos").toInt();
+    strcpy(fullpage, header_2);
+    add_text(fullpage, "</p></body></html>");
+    server.send(200, "text/html", fullpage );
+}
+
+int ota_loop()
 {
     static wl_status_t old_status = WL_DISCONNECTED;
 
@@ -81,18 +103,20 @@ void ota_loop()
                 server.send(200, "text/html", welcome_msg );
             });
 
+            server.on("/adjust", processAdjust);
+            server.on("/spin", processSpin);
+
             ElegantOTA.begin(&server);    // Start ElegantOTA
             server.begin();
             Serial.println("HTTP server started");
 
         }
         old_status = newstatus;
-        server.on("/", []() 
-        {
-            server.send(200, "text/html", welcome_msg );
-        });
+    
     }
 
     if(newstatus == WL_CONNECTED)
         server.handleClient();
+
+    return getAdjust();
 }

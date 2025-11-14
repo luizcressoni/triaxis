@@ -25,17 +25,22 @@
 #endif 
 
 
+long gPulsesPerSpin = 0;
+
 cStatusLed  gLed(GPIO_LED, true);
 Preferences preferences;
 
 ezButton button_minus(KEY_MINUS);
 ezButton button_plus(KEY_PLUS);
 ezButton button_advance_one(KEY_ADVANCE_ONE);
+//ezButton button_sensor(KEY_BUTTON);
+
 
 void buttons_setup(){
   button_minus.setDebounceTime(50);
   button_plus.setDebounceTime(50);
   button_advance_one.setDebounceTime(50);
+  //button_sensor.setDebounceTime(50);
 }
 
 
@@ -43,12 +48,16 @@ void setup(){
 #ifdef DISABLE_BROWNOUT
    WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
 #endif
-   Serial.begin(9600);
-  delay(15);
+  Serial.begin(9600);
+  //delay(5000);
   preferences.begin("clock", false); 
+  gPulsesPerSpin = 0; //preferences.getLong("pulses");
   gLed.SetState(LED_STATUS_OFFLINE);
   stepper_setup();
   buttons_setup();
+  Serial.printf("Pulses:    %ld\n", gPulsesPerSpin);
+  Serial.printf("Lash Hour: %d\n", preferences.getInt("hour"));
+  Serial.printf("Last min:  %d\n", preferences.getInt("min"));
 }
 
 void save_current_time()
@@ -81,6 +90,22 @@ uint32_t spin_to_current_time()
     return delta_minutes;
 }
 
+// bool sensor_task()
+// {
+//   static uint8_t phase = 0;
+//   if(phase == 0 && button_sensor.isPressed()){
+//     Serial.printf("Sensor pressed\n");
+//     phase = 1;
+//   }
+//   else if(phase == 1 && button_sensor.isReleased()){
+//     phase = 0;
+//     Serial.printf("Sensor released\n");
+//     return true;
+//   }
+//   return false;
+// }
+
+
 int test_buttons()
 {
   if(button_minus.isPressed())
@@ -98,12 +123,16 @@ void button_task()
   button_minus.loop();
   button_plus.loop();
   button_advance_one.loop();
+  //button_sensor.loop();
 }
+
 
 void loop() {
   button_task();
   bool online = wifi_loop();
-  ota_loop();
+  int adjust_level = ota_loop();
+  stepper_loop(false);
+  gLed.Task();
   
   if(online && gLed.GetState() == LED_STATUS_OFFLINE)
   {
@@ -116,7 +145,7 @@ void loop() {
   if(online)
     update_time();
 
-  gLed.Task();
+  
   if(minute_changed(UPDATESECONDS)){
     save_current_time();
     stepper_move(PULSES_PER_MINUTE);
@@ -125,9 +154,16 @@ void loop() {
     int value = test_buttons();
     if(value)
       stepper_move(value);
+    else if(adjust_level != 0)
+      stepper_move(adjust_level);
   }
-
-  stepper_loop();
 }
+
+
+/***
+ *  18:00 - 8:26  --> 8:28   (1548)
+ *  626 min girou 628  --> 1543 
+ * 
+ */
 
 //eof main
